@@ -4,10 +4,10 @@
 from __future__ import unicode_literals
 
 from rest_framework import viewsets
-from rest_framework import authntication, permissins
+from rest_framework import authentication, permissions
 from django.contrib.auth import get_user_model
 
-from .models import Sprint
+from .models import Sprint, Task
 from .serializers import SprintSerializer, TaskSerializer, UserSerializer
 
 
@@ -17,12 +17,12 @@ User = get_user_model()
 class DefaultsMixin(object):
     """ default settings for view authen/permissin/filter/page """
 
-    authnticatin_classes = (
-        authntication.BasicAuthenticatin,
-        authntication.TokenAuthentication,
+    authenticatin_classes = (
+        authentication.BasicAuthenticatin,
+        authentication.TokenAuthentication,
     )
     permission_classes = (
-        permissins.IsAuthenticated,
+        permissions.IsAuthenticated,
     )
     paginate_by = 25
     paginate_by_param = 'page_size'
