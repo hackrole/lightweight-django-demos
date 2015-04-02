@@ -1,25 +1,19 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from __future__ import unicode_literals
-
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import get_user_model
-
-
-User = get_user_model()
+from django.conf import settings
 
 
 class Sprint(models.Model):
-    """ Develpment iteration period """
+    """ development iteration period """
 
     name = models.CharField(max_length=100, blank=True, default='')
     description = models.TextField(blank=True, default='')
     end = models.DateField(unique=True)
 
-    def __str__(self):
-        return self.name or _('Sprint ending %s') % self.end
+    def ___str__(self):
+        return self.name or "Sprint ending %s" % self.end
 
 
 class Task(models.Model):
@@ -31,19 +25,20 @@ class Task(models.Model):
     STATUS_DONE = 4
 
     STATUS_CHOICES = (
-        (STATUS_TODO, _('Not Started')),
-        (STATUS_IN_PROGRESS, _('In Progress')),
-        (STATUS_TESTING, _('Testing')),
-        (STATUS_DONE, _('DONE')),
+        (STATUS_TODO, 'Not Started'),
+        (STATUS_IN_PROGRESS, 'In Progress'),
+        (STATUS_TESTING, 'Testing'),
+        (STATUS_DONE, 'DONE'),
     )
 
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, default='')
-    sprint = models.ForeignKey(Sprint, blank=True, null=True)
+    sprint = models.ForeignKey(Sprint, null=True, blank=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES,
                                       default=STATUS_TODO)
     order = models.SmallIntegerField(default=0)
-    assign = models.ForeignKey(User, null=True, blank=True)
+    assigned = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                 null=True, blank=True)
     started = models.DateField(blank=True, null=True)
     due = models.DateField(blank=True, null=True)
     completed = models.DateField(blank=True, null=True)
