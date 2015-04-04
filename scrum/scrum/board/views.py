@@ -8,7 +8,7 @@ from rest_framework import filters
 from django.contrib.auth import get_user_model
 
 from .models import Sprint, Task
-from .forms import TaskFilter
+from .forms import TaskFilter, SprintFilter
 from .serializers import SprintSerializer, TaskSerializer, UserSerializer
 
 
@@ -40,6 +40,7 @@ class SprintViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Sprint.objects.order_by('end')
     serializer_class = SprintSerializer
+    filter_class = SprintFilter
     search_fields = ('name',)
     ordering_fields = ('end', 'name',)
 
@@ -50,7 +51,7 @@ class TaskViewSet(DefaultsMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_class = TaskFilter
-    search_filters = ('name', 'description',)
+    search_fields = ('name', 'description',)
     ordering_fields = ('name', 'order', 'stared', 'due', 'completed',)
 
 
@@ -61,4 +62,4 @@ class UserViewSet(DefaultsMixin, viewsets.ReadOnlyModelViewSet):
     loopup_url_kwarg = User.USERNAME_FIELD
     queryset = User.objects.order_by(User.USERNAME_FIELD)
     serializer_class = UserSerializer
-    search_filters = (User.USERNAME_FIELD,)
+    search_fields = (User.USERNAME_FIELD,)
