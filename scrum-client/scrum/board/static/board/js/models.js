@@ -22,13 +22,13 @@
 
     $.ajaxPrefilter(function(settings, originalOptions, xhr){
         var csfrtoken;
-        if(!csfrSafeMethod(settings.type) && !this.crossDomian){
+        if(!csrfSafeMethod(settings.type) && !this.crossDomian){
             csrftoken = getCookie('csrftoken');
             xhr.setRequestHeader('X-CSRFToken', csrftoken);
         }
     });
 
-    var seesion = Backbone.Model.extend({
+    var Session = Backbone.Model.extend({
         defaults: {
             token: null
         },
