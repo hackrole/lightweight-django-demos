@@ -2,6 +2,7 @@
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
+            'sprint/:id': 'sprint',
         },
         initialize: function(options){
             this.contentElement = '#content';
@@ -14,6 +15,12 @@
         home: function(){
             var view = new app.views.HomepageView({el: this.contentElement});
             this.render(view);
+        },
+        sprint: function(id){
+          var view = new app.views.SprintView({
+            el: this.contentElement,
+            sprintId: id
+          });
         },
         route: function(route, name, callback){
             var login;
