@@ -12,7 +12,7 @@
                 var cookie = $.trim(cookies[i]);
 
                 if(cookie.substring(0, name.length + 1) == (name + '=')){
-                    cookieValue = decodeURLComponent(cookie.substring(name.length+1));
+                    cookieValue = decodeURIComponent(cookie.substring(name.length+1));
                     break;
                 }
             }
@@ -86,7 +86,7 @@
         fetchTasks: function(){
             var links = this.get('links');
             if(links && links.tasks){
-                app.tasks.fetch({url, links.tasks, remove: false});
+                app.tasks.fetch({url: links.tasks, remove: false});
             }
         }
     });
@@ -106,6 +106,32 @@
         },
         inSprint: function(sprint){
             return sprint.get('id') == this.get('sprint');
+        },
+        moveTo: function(status, sprint, order){
+          var updates = {
+            status: status,
+            sprint: sprint,
+            order: order,
+          };
+          var today = new Date().toISOString().replace(/T.*/g, '');
+          // backlog tasks
+          if(!updates.sprint){
+            // tasks moved back to the backlog
+            updates.status = -1;
+          }
+          // started tasks
+          if((updates.status == 2) || (updates.status > 2 && !this.get('started'))){
+            updates.started = today;
+          }else if(updates.statis < 2 && this.get('started')){
+            updates.started = null;
+          }
+          // completed tasks
+          if(updates.status === 4){
+            updates.completed = today;
+          }else if(updates.status < 4 && this.get('completed')){
+            updates.completed = null;
+          }
+          this.save(updates);
         }
     });
     app.models.User = BaseModel.extend({
@@ -119,7 +145,7 @@
             this._count = response.count;
             return response.results || [];
         },
-        getorFetch: function(id){
+        getOrFetch: function(id){
             var result = new $.Deferred();
             var model = this.get(id);
             if(!model){
@@ -148,7 +174,7 @@
         app.sprints =new app.collections.Sprints();
         app.collections.Tasks = BaseCollection.extend({
             model: app.models.Task,
-            url: data.tasks
+            url: data.tasks,
             getBacklog: function(){
                 this.fetch({remove: false, data: {backlog: 'True'}});
             }

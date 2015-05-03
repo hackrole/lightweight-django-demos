@@ -25,10 +25,10 @@ class SprintHandler(WebSocketHandler):
     """ handles real-time updates to the board """
 
     def check_origin(self, origin):
-        allowed = super().check_origin(origin)
-
+        allowed = super(SprintHandler, self).check_origin(origin)
         parsed = urlparse(origin.lower())
-        return allowed or parsed.netloc.startwith('localhost:')
+        matched = any(parsed.netloc == host for host in options.allowed_hosts)
+        return options.debug or allowed or matched
 
     def open(self, sprint):
         """ subscribe to sprint updates on a new connection """
@@ -37,7 +37,7 @@ class SprintHandler(WebSocketHandler):
 
     def on_message(self, message):
         """ broadcast updates to other interested clients """
-        pass
+        self.application.broadcast(message, channel=self.sprint, sender=self)
 
     def on_close(self):
         """ remove subscription """
@@ -67,7 +67,7 @@ class ScrumApplication(Application):
             for c in self.subscriptions.keys():
                 self.broadcast(message, channel=c, sender=sender)
         else:
-            peers = self.get_subscriber(channel)
+            peers = self.get_subscribers(channel)
             for peer in peers:
                 if peer != sender:
                     try:

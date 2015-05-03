@@ -21,7 +21,7 @@
           </a>
         <% }); %>
       </div>
-      <% else { %>
+      <% } else { %>
         <h3 class="loading">Loading ...</h3>
       <% } %>
   </script>
@@ -60,7 +60,7 @@
       <% if(!sprint.invalid) { %>
         <h2><%- sprint.get('name') %></h2>
         <span class="due-date">Due <%- sprint.get('end') %></span>
-        <p class="description"><%- sprint.get('description') %.</p>
+        <p class="description"><%- sprint.get('description') %></p>
         <div class="tasks"></div>
       <% }else{ %>
         <h1>Sprint <%- sprint.get('id') %> not found.</h1>
@@ -129,6 +129,7 @@
     }
   </script>
   <script src="{% static 'board/js/app.js' %}"></script>
+  <script src="{% statis 'board/js/socket.js' %}"></script>
   <script src="{% static 'board/js/models.js' %}"></script>
   <script src="{% static 'board/js/views.js' %}"></script>
   <script src="{% static 'board/js/router.js' %}"></script>
