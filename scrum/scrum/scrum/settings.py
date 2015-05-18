@@ -77,3 +77,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+WATERCOOL_SERVER = os.environ.get('WATERCOOL_SERVER', 'localhost:8080')
+
+WATERCOOL_SECURE = bool(os.environ.get('WATERCOOL_SECURE', ''))
