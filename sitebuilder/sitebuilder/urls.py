@@ -3,6 +3,6 @@ from .views import page
 
 
 urlpatterns = (
-    url(r'^(?P<slug>[\w./-]+)/$', page, name='pge'),
-    url(r'^$', page, name='homepge'),
+    url(r'^(?P<slug>[\w./-]+)/$', page, name='page'),
+    url(r'^$', page, name='homepage'),
 )
