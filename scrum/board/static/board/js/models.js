@@ -55,7 +55,7 @@
             this.save(null);
         },
         authenticated: function(){
-            return this.get('token') != null;
+            return this.get('token') !== null;
         },
         _setupAuth: function(settings, originalOptions, xhr){
             if(this.authenticated()){
