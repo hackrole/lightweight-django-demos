@@ -20,6 +20,8 @@ sprint表为冲刺目标, task为子任务表. 配合使用django auth模块的u
 
 4) django的serializer是很好的设计，不过用django紧耦合导致无法在tornado中使用.
 
+5) 设计api前应该先设计url.
+
 未完成的任务
 ------------
 
