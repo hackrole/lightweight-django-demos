@@ -30,14 +30,13 @@ class SprintSerializer(serializers.ModelSerializer):
                              request=request) + '?Sprint={}'.format(obj.pk),
         }
 
-    def validate_end(self, attrs, source):
-        end_date = attrs[source]
-        new = not self.object
-        changed = self.object and self.object.end != end_date
+    def validate_end(self, end_date):
+        new = not self.instance
+        changed = self.instance and self.instance.end != end_date
         if (new or changed) and (end_date < date.today()):
             msg = "End date cannot be in the past."
             raise serializers.ValidationError(msg)
-        return attrs
+        return end_date
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -59,7 +58,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def get_links(self, obj):
         request = self.context['request']
-        username = obj.get_username()
+        username = request.user.get_username()
 
         links = {
             'self': reverse('task-detail',
@@ -81,11 +80,10 @@ class TaskSerializer(serializers.ModelSerializer):
 
         return links
 
-    def validate_sprint(self, attrs, source):
-        sprint = attrs[source]
-        if self.object and self.object.pk:
-            if sprint != self.object.sprint:
-                if self.object.status == Task.STATUS_DONE:
+    def validate_sprint(self, sprint):
+        if self.instance and self.instance.pk:
+            if sprint != self.instance.sprint:
+                if self.instace.status == Task.STATUS_DONE:
                     msg = 'cannot change the sprint of a completed task'
                     raise serializers.ValidationError(msg)
                 if sprint and sprint.end < date.today():
@@ -96,7 +94,7 @@ class TaskSerializer(serializers.ModelSerializer):
                 msg = 'cannot add tasks to past sprints'
                 raise serializers.ValidationError(msg)
 
-        return attrs
+        return sprint
 
     def validate(self, attrs):
         sprint = attrs.get('sprint')

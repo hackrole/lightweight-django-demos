@@ -31,8 +31,8 @@ class TaskFilter(django_filters.FilterSet):
         fields = ('sprint', 'status', 'assigned', 'backlog',)
 
     def __init__(self, *args, **kw):
-        super().__init__(*args, **kw)
-        self.filter['assign'].extra.update(
+        super(TaskFilter, self).__init__(*args, **kw)
+        self.filters['assigned'].extra.update(
             {'to_field_name': User.USERNAME_FIELD})
 
 

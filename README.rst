@@ -6,6 +6,9 @@ lightweight-django第四章
 
 sprint表为冲刺目标, task为子任务表. 配合使用django auth模块的user表完成认证和权限管理.
 
+需要注意的是书中使用python3, 语法上和python2.7有写区别会导致部分bug.
+还有由于使用的djangorestframework版本较低导致部分bug的问题。
+
 收获
 ----
 
