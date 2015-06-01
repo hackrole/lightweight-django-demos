@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import Http404
 from django.template import Template
 from django.template import Context
-from django.tempalte.loader_tags import BlockNode
+from django.template.loader_tags import BlockNode
 from django.shortcuts import render
 from django.utils._os import safe_join
 
